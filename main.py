@@ -2,12 +2,12 @@ import interval as it
 
 
 def main():
-	count_right = 0
-	left, right = 0, 0
+	check = ''
+	count_result = 0
 	for i in range(0, it.MAX_PROBLEM):
-		left, right = it.print_problem(i)
-		count_right = it.verify_answer(count_right, left, right)
-	it.print_result(count_right)
+		check = it.print_problem(i)
+		count_result = it.verify_answer(count_result, check)
+	it.print_result(count_result)
 
 
 main()

@@ -51,58 +51,76 @@ STEP_TO_QUALITY = {
 	'7-9': 'd',
 }
 
-
-def print_problem(p_index):
-	left_index = rd.randrange(0, MAX_NOTE_INDEX)
-	right_index = left_index
-	while right_index == left_index:
-		right_index = rd.randrange(0, MAX_NOTE_INDEX)
-	left = NOTE_DATA[left_index]
-	right = NOTE_DATA[right_index]
-	print(f'{p_index + 1:02}: {left[0]} - {right[0]}')
-	return left_index, right_index
+MIN_HALF_STEP = -1
+MAX_HALF_STEP = 2
+STEP_TO_SIGN = {
+	-1: 'b',
+	0: '',
+	1: '#',
+}
 
 
-def verify_answer(count_right, left_index, right_index):
+def print_problem(index_p):
+	left, right, check = _get_problem()
+	note_l, step_l = left
+	note_r, step_r = right
+	sign_l = STEP_TO_SIGN[step_l]
+	sign_r = STEP_TO_SIGN[step_r]
+	print(
+			f'{index_p + 1:02}: '
+			f'{note_l[0]}{sign_l} - '
+			f'{note_r[0]}{sign_r}'
+	)
+	return check
+
+
+def verify_answer(count_result, check):
 	answer = input('$?: ')
 	#if answer.isdigit():
 		#answer = int(answer)
 	#else:
 		#answer = -1
-	if not _is_right_answer(answer, left_index, right_index):
-		print('Wrong answer')
+	if answer == check:
+		count_result += 1
 	else:
-		count_right += 1
-	return count_right
-
-
-def print_result(count_right):
-	print(f'$$: {count_right}/{MAX_PROBLEM}')
-
-
-def _is_right_answer(answer, left_index, right_index):
-	if left_index == right_index:
-		raise ValueError('Left == Right: {left}')
-		return False
-
-	left = NOTE_DATA[left_index]
-	right = NOTE_DATA[right_index]
-	if left_index > right_index:
-		right = NOTE_DATA[right_index + MAX_NOTE_INDEX]
-	size = _get_size(left[1], right[1])
-	quality = _get_quality(size, left[2], right[2])
-	check = f'{quality}{size}'
+		print('Wrong answer')
 	#print(f'{answer}: {check}')
-	return answer == check
+	return count_result
 
 
-def _get_size(left_size, right_size):
-	return right_size - left_size + 1
+def print_result(count_result):
+	print(f'$$: {count_result}/{MAX_PROBLEM}')
 
 
-def _get_quality(size, left_step, right_step):
-	step = right_step - left_step
+def _get_problem():
+	while True:
+		index_l = rd.randrange(0, MAX_NOTE_INDEX)
+		index_r = index_l
+		while index_r == index_l:
+			index_r = rd.randrange(0, MAX_NOTE_INDEX)
+		step_l = rd.randrange(MIN_HALF_STEP, MAX_HALF_STEP)
+		step_r = rd.randrange(MIN_HALF_STEP, MAX_HALF_STEP)
+
+		note_l = NOTE_DATA[index_l]
+		note_r = NOTE_DATA[index_r]
+		if index_l > index_r:
+			note_r = NOTE_DATA[index_r + MAX_NOTE_INDEX]
+
+		size = _get_size(note_l[1], note_r[1])
+		quality = _get_quality(
+				size, note_l[2] + step_l, note_r[2] + step_r
+		)
+		if quality != '':
+			check = f'{quality}{size}'
+			break
+	return (note_l, step_l), (note_r, step_r), check
+
+
+def _get_size(size_l, size_r):
+	return size_r - size_l + 1
+
+
+def _get_quality(size, step_l, step_r):
+	step = step_r - step_l
 	quality = STEP_TO_QUALITY.get(f'{size}-{step}', '')
-	if quality == '':
-		raise ValueError(f'No quality: {size}-{left_step}:{right_step}')
 	return quality

@@ -15,18 +15,6 @@ run:
 	@python3 $(FILE_MAIN)
 
 
-.PHONY: git
-git:
-	@git log --oneline -n 5
-	@printf "\n"
-	@git status
-
-
-.PHONY: tig
-tig:
-	@tig
-
-
 .PHONY: init
 init:
 	mkdir -p $(DIR_BIN)
