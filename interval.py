@@ -75,17 +75,18 @@ def print_problem(index_p):
 
 
 def verify_answer(count_result, check):
-	answer = input('$?: ')
-	#if answer.isdigit():
-		#answer = int(answer)
-	#else:
-		#answer = -1
+	try:
+		answer = input('$?: ')
+	except (KeyboardInterrupt, EOFError):
+		print('User interrupt')
+		return count_result, False
+
 	if answer == check:
 		count_result += 1
 	else:
 		print('Wrong answer')
 	#print(f'{answer}: {check}')
-	return count_result
+	return count_result, True
 
 
 def print_result(count_result):
