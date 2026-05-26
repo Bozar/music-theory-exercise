@@ -1,6 +1,7 @@
 *.swp
+tags
 
-bin/*
-!bin/.gitkeep
+**/build/*
+!**/build/.gitkeep
 
 __pycache__/
