@@ -25,6 +25,8 @@ PATH_EXE_WIN := $(addprefix $(DIR_SHARE)/,$(FILE_EXE_WIN))
 PATH_GIT_IGNORE := $(addprefix ./,$(FILE_GIT_IGNORE))
 
 ARG_WIN := GOOS=windows GOARCH=amd64
+# NOTE: Set `ARG_RUN` to empty once test is done.
+ARG_RUN := i
 
 CMD_LS_HIDDEN := printf "_: " && ls --color -p $(DIR_HIDDEN)
 CMD_LS_SRC := printf "src: " && ls --color -p $(DIR_SRC)
@@ -91,7 +93,7 @@ nfile:
 
 
 run:
-	$(PATH_EXE_LINUX)
+	$(PATH_EXE_LINUX) $(ARG_RUN)
 
 
 clean:

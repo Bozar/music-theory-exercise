@@ -1,22 +1,22 @@
 package main
 
 import (
-	"fmt"
+	"github.com/Bozar/mygo/src/help"
+	"github.com/Bozar/mygo/src/interval"
+
+	"os"
 )
 
 func main() {
-	var input, check string
-	count := 0
-	maxCount := 3
-	for i := 1; i < maxCount+1; i++ {
-		check = fmt.Sprintf("m%d", i)
-		fmt.Printf("answer: %s\n$?: ", check)
-		fmt.Scan(&input)
-		if input != check {
-			fmt.Println("wrong")
-		} else {
-			count += 1
-		}
+	if len(os.Args) < 2 {
+		help.Print()
+		return
 	}
-	fmt.Printf("$$: %d/%d\n", count, maxCount)
+
+	switch os.Args[1] {
+	case "i":
+		interval.Print()
+	default:
+		help.Print()
+	}
 }
