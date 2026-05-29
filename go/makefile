@@ -8,13 +8,13 @@ MOD_NAME := github.com/Bozar/mygo
 
 FILE_MAIN := main.go
 FILE_SRC := ...
-FILE_EXE_LINUX := prog
-FILE_EXE_WIN := prog.exe
+FILE_EXE_LINUX := music_theory
+FILE_EXE_WIN := music_theory.exe
 FILE_GIT_KEEP := .gitkeep
 FILE_GIT_IGNORE := .gitignore
 FILE_TAGS := tags
 
-DIR_BUILD := ./build
+DIR_BUILD := ~/bin
 DIR_SRC := ./src
 DIR_HIDDEN := $(DIR_SRC)/_
 DIR_SHARE := ~/share

@@ -14,23 +14,30 @@ func Print() {
 }
 
 func problem(count int, rd *rand.Rand) {
-	lPitch, rPitch := pitch(rd)
+	ok := false
+	var lPitch, rPitch pitchPack
+	var interval string
+	for !ok {
+		lPitch, rPitch = pitch(rd)
+		interval, ok = answer(lPitch, rPitch)
+	}
 
 	fmt.Printf(
 		"%02d: %c%c - %c%c\n", count,
 		lPitch.pitch, lPitch.accidental(),
 		rPitch.pitch, rPitch.accidental(),
 	)
+	fmt.Printf("%s\n", interval)
 }
 
 func pitch(rd *rand.Rand) (pitchPack, pitchPack) {
 	lIndex, rIndex := index(rd)
-	lStep, rStep := step(rd)
+	lQuality, rQuality := quality(rd)
 
 	lPitch := pitchPacks[lIndex]
 	rPitch := pitchPacks[rIndex]
-	lPitch.halfStep = lStep
-	rPitch.halfStep = rStep
+	lPitch.quality = lQuality
+	rPitch.quality = rQuality
 	return lPitch, rPitch
 }
 
@@ -47,10 +54,18 @@ func index(rd *rand.Rand) (int, int) {
 	return left, right
 }
 
-func step(rd *rand.Rand) (int, int) {
+func quality(rd *rand.Rand) (int, int) {
 	left := rd.Intn(maxStep-minStep) + minStep
 	right := rd.Intn(maxStep-minStep) + minStep
 	return left, right
+}
+
+func answer(lPitch pitchPack, rPitch pitchPack) (string, bool) {
+	size := rPitch.size - lPitch.size + 1
+	step := (rPitch.halfStep + rPitch.quality) -
+		(lPitch.halfStep + lPitch.quality)
+	quality := stepToQuality[size*100+step]
+	return fmt.Sprintf("%c%d", quality, size), (quality != 0)
 }
 
 //func Print() {

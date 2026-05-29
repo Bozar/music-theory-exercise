@@ -2,12 +2,13 @@ package interval
 
 type pitchPack struct {
 	pitch    rune
-	interval int
+	size     int
+	quality  int
 	halfStep int
 }
 
 func (pp *pitchPack) accidental() rune {
-	switch pp.halfStep {
+	switch pp.quality {
 	case -1:
 		return 'b'
 	case 1:
