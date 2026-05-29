@@ -4,7 +4,7 @@ f ?= i
 # Package directory name
 d ?= pkg/file
 
-MOD_NAME := github.com/Bozar/mygo
+MOD_NAME := github.com/Bozar/music-theory-exercise/go
 
 FILE_MAIN := main.go
 FILE_SRC := ...

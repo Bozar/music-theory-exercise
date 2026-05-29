@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/Bozar/mygo/src/help"
-	"github.com/Bozar/mygo/src/interval"
+	"github.com/Bozar/music-theory-exercise/go/src/help"
+	"github.com/Bozar/music-theory-exercise/go/src/interval"
 
 	"os"
 )
