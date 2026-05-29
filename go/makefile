@@ -1,8 +1,8 @@
+# Optional argument for `make run`
+f ?= i
+
 # Package directory name
 d ?= pkg/file
-
-# Optional argument
-f ?=
 
 MOD_NAME := github.com/Bozar/mygo
 
@@ -12,21 +12,22 @@ FILE_EXE_LINUX := prog
 FILE_EXE_WIN := prog.exe
 FILE_GIT_KEEP := .gitkeep
 FILE_GIT_IGNORE := .gitignore
+FILE_TAGS := tags
 
 DIR_BUILD := ./build
 DIR_SRC := ./src
 DIR_HIDDEN := $(DIR_SRC)/_
 DIR_SHARE := ~/share
+DIR_TAGS := ~/tags/music
 
 PATH_MAIN := $(addprefix ./,$(FILE_MAIN))
 PATH_SRC := $(addprefix $(DIR_SRC)/,$(FILE_SRC))
 PATH_EXE_LINUX := $(addprefix $(DIR_BUILD)/,$(FILE_EXE_LINUX))
 PATH_EXE_WIN := $(addprefix $(DIR_SHARE)/,$(FILE_EXE_WIN))
 PATH_GIT_IGNORE := $(addprefix ./,$(FILE_GIT_IGNORE))
+PATH_TAGS := $(addprefix $(DIR_TAGS)/,$(FILE_TAGS))
 
 ARG_WIN := GOOS=windows GOARCH=amd64
-# NOTE: Set `ARG_RUN` to empty once test is done.
-ARG_RUN := i
 
 CMD_LS_HIDDEN := printf "_: " && ls --color -p $(DIR_HIDDEN)
 CMD_LS_SRC := printf "src: " && ls --color -p $(DIR_SRC)
@@ -53,11 +54,11 @@ vet:
 
 
 test:
-	go test $(f) $(PATH_SRC)
+	go test $(PATH_SRC)
 
 
 tag:
-	ctags --tag-relative=never -R .
+	ctags -f $(PATH_TAGS) --tag-relative=never -R .
 
 
 linux:
@@ -69,6 +70,7 @@ win:
 
 
 init:
+	mkdir -p $(DIR_TAGS)
 	mkdir -p $(DIR_BUILD)
 	mkdir -p $(DIR_SRC)
 	mkdir -p $(DIR_HIDDEN)
@@ -93,7 +95,7 @@ nfile:
 
 
 run:
-	$(PATH_EXE_LINUX) $(ARG_RUN)
+	$(PATH_EXE_LINUX) $(f)
 
 
 clean:
