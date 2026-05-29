@@ -6,22 +6,28 @@ import (
 	"time"
 )
 
-func Print() {
+func Print(countProblem int) {
 	var ask, answer string
 	rd := rand.New(rand.NewSource(time.Now().UnixNano()))
 	wrong := []string{}
-	for i := 1; i < maxProblem+1; i++ {
+	if countProblem < minProblem {
+		countProblem = maxProblem
+	}
+	countProblem = min(countProblem, maxProblem)
+
+	for i := 1; i < countProblem+1; i++ {
 		ask, answer = problem(i, rd)
 		if verify(answer) {
 			continue
 		}
 		wrong = append(wrong, fmt.Sprintf("%s | %s", ask, answer))
 	}
+
 	fmt.Println()
 	for _, v := range wrong {
 		fmt.Printf("%s\n", v)
 	}
-	fmt.Printf("$$: %d/%d\n", maxProblem-len(wrong), maxProblem)
+	fmt.Printf("$$: %d/%d\n", countProblem-len(wrong), countProblem)
 }
 
 func verify(answer string) bool {

@@ -1,10 +1,12 @@
 package interval
 
 const maxProblem int = 10
-const maxPitchPacksIndex int = 7
+const minProblem int = 1
 
 const minStep int = -1
 const maxStep int = 2
+
+const maxPitchPacksIndex int = 7
 
 var pitchPacks = []pitchPack{
 	pitchPack{'C', 0, 0, 0},

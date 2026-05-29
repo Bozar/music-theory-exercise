@@ -8,7 +8,7 @@ import (
 
 func Print() {
 	prog := filepath.Base(os.Args[0])
-	fmt.Printf("%s [i|s]\n\n", prog)
+	fmt.Printf("%s {i|s} [max_problem]\n\n", prog)
 	fmt.Println("i: Interval")
 	fmt.Println("s: Scale")
 }
