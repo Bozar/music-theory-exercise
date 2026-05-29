@@ -7,13 +7,36 @@ import (
 )
 
 func Print() {
+	var ask, answer string
 	rd := rand.New(rand.NewSource(time.Now().UnixNano()))
+	wrong := []string{}
 	for i := 1; i < maxProblem+1; i++ {
-		problem(i, rd)
+		ask, answer = problem(i, rd)
+		if verify(answer) {
+			continue
+		}
+		wrong = append(wrong, fmt.Sprintf("%s | %s", ask, answer))
 	}
+	fmt.Println()
+	for _, v := range wrong {
+		fmt.Printf("%s\n", v)
+	}
+	fmt.Printf("$$: %d/%d\n", maxProblem-len(wrong), maxProblem)
 }
 
-func problem(count int, rd *rand.Rand) {
+func verify(answer string) bool {
+	var input string
+	fmt.Printf("$?: ")
+	fmt.Scanln(&input)
+
+	if input == answer {
+		return true
+	}
+	fmt.Println("Wrong")
+	return false
+}
+
+func problem(count int, rd *rand.Rand) (string, string) {
 	ok := false
 	var lPitch, rPitch pitchPack
 	var interval string
@@ -22,12 +45,13 @@ func problem(count int, rd *rand.Rand) {
 		interval, ok = answer(lPitch, rPitch)
 	}
 
-	fmt.Printf(
-		"%02d: %c%c - %c%c\n", count,
+	ask := fmt.Sprintf(
+		"%02d: %c%c - %c%c", count,
 		lPitch.pitch, lPitch.accidental(),
 		rPitch.pitch, rPitch.accidental(),
 	)
-	fmt.Printf("%s\n", interval)
+	fmt.Printf("%s\n", ask)
+	return ask, interval
 }
 
 func pitch(rd *rand.Rand) (pitchPack, pitchPack) {
@@ -67,23 +91,3 @@ func answer(lPitch pitchPack, rPitch pitchPack) (string, bool) {
 	quality := stepToQuality[size*100+step]
 	return fmt.Sprintf("%c%d", quality, size), (quality != 0)
 }
-
-//func Print() {
-//	fmt.Printf("%c-%d\n", pitchPacks[0].pitch, pitchPacks[0].halfStep)
-//	var input, check string
-//	count := 0
-//	maxCount := 3
-//	for i := 1; i < maxCount+1; i++ {
-//		check = fmt.Sprintf("m%d", i)
-//		fmt.Printf("answer: %s\n$?: ", check)
-//		fmt.Scanln(&input)
-//		//		fmt.Scanf("%s\n", &input)
-//		//		fmt.Scan(&input)
-//		if input != check {
-//			fmt.Println("wrong")
-//		} else {
-//			count += 1
-//		}
-//	}
-//	fmt.Printf("$$: %d/%d\n", count, maxCount)
-//}

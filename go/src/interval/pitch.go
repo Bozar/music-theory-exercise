@@ -14,6 +14,6 @@ func (pp *pitchPack) accidental() rune {
 	case 1:
 		return '#'
 	default:
-		return 0
+		return ' '
 	}
 }
