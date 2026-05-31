@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/Bozar/music-theory-exercise/go/src/help"
 	"github.com/Bozar/music-theory-exercise/go/src/interval"
+	"github.com/Bozar/music-theory-exercise/go/src/problem"
 	"github.com/Bozar/music-theory-exercise/go/src/scale"
 
 	"os"
@@ -18,7 +19,7 @@ func main() {
 
 	switch topic {
 	case "i":
-		interval.Print(maxProblem)
+		problem.Print(maxProblem, interval.Ask)
 	case "s":
 		scale.Print()
 	default:

@@ -1,8 +1,5 @@
 package interval
 
-const maxProblem int = 10
-const minProblem int = 1
-
 const minStep int = -1
 const maxStep int = 2
 
