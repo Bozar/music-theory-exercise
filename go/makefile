@@ -1,5 +1,5 @@
 # Optional argument for `make run`
-f ?= i
+f ?= s 3
 
 # Package directory name
 d ?= pkg/file
@@ -32,19 +32,15 @@ ARG_WIN := GOOS=windows GOARCH=amd64
 CMD_LS_HIDDEN := printf "_: " && ls --color -p $(DIR_HIDDEN)
 CMD_LS_SRC := printf "src: " && ls --color -p $(DIR_SRC)
 
-
 .PHONY: all fmt vet test linux win tag \
 		init npack nfile run clean show hide unhide
 
-
 all: fmt vet test linux tag
-
 
 fmt:
 	go fmt $(PATH_MAIN)
 	go fmt $(PATH_SRC)
 	go mod tidy
-
 
 vet:
 	go vet $(PATH_MAIN)
@@ -52,22 +48,18 @@ vet:
 	go-staticcheck $(PATH_MAIN)
 	go-staticcheck $(PATH_SRC)
 
-
 test:
 	go test $(PATH_SRC)
 
-
 tag:
+	mkdir -p $(DIR_TAGS)
 	ctags -f $(PATH_TAGS) --tag-relative=never -R .
-
 
 linux:
 	go build -o $(PATH_EXE_LINUX)
 
-
 win:
 	$(ARG_WIN) go build -o $(PATH_EXE_WIN)
-
 
 init:
 	mkdir -p $(DIR_TAGS)
@@ -81,37 +73,30 @@ init:
 	go mod init $(MOD_NAME)
 	git init
 
-
 npack:
 	mkdir -p $(DIR_SRC)/$(d)
 	touch $(DIR_SRC)/$(d)/$(notdir $(d)).go
 	touch $(DIR_SRC)/$(d)/$(notdir $(d))_test.go
-
 
 nfile:
 	mkdir -p $(DIR_SRC)/$(dir $(d))
 	touch $(DIR_SRC)/$(dir $(d))$(notdir $(d)).go
 	touch $(DIR_SRC)/$(dir $(d))$(notdir $(d))_test.go
 
-
 run:
 	$(PATH_EXE_LINUX) $(f)
 
-
 clean:
 	rm -rIv $(PATH_EXE_LINUX) $(PATH_EXE_WIN)
-
 
 show:
 	@$(CMD_LS_HIDDEN)
 	@$(CMD_LS_SRC)
 
-
 hide:
 	@cd $(DIR_SRC) && mv $(d) ./_
 	@$(CMD_LS_HIDDEN)
 	@$(CMD_LS_SRC)
-
 
 unhide:
 	@cd $(DIR_HIDDEN) && mv $(d) ../

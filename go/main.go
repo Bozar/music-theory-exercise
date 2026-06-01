@@ -7,13 +7,15 @@ import (
 	"github.com/Bozar/music-theory-exercise/go/src/scale"
 
 	"os"
+	"path/filepath"
 	"strconv"
 )
 
 func main() {
 	topic, maxProblem, ok := parseArgs(os.Args)
+	prog := filepath.Base(os.Args[0])
 	if !ok {
-		help.Print()
+		help.Print(prog)
 		return
 	}
 
@@ -21,9 +23,9 @@ func main() {
 	case "i":
 		problem.Print(maxProblem, interval.Ask)
 	case "s":
-		scale.Print()
+		problem.Print(maxProblem, scale.Ask)
 	default:
-		help.Print()
+		help.Print(prog)
 	}
 }
 
