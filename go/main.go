@@ -11,39 +11,49 @@ import (
 	"strconv"
 )
 
+type args struct {
+	topic      string
+	maxProblem int
+
+	prog string
+	ok   bool
+}
+
 func main() {
-	topic, maxProblem, ok := parseArgs(os.Args)
-	prog := filepath.Base(os.Args[0])
-	if !ok {
-		help.Print(prog)
+	pa := parseArgs(os.Args)
+	if !pa.ok {
+		help.Print(pa.prog)
 		return
 	}
 
-	switch topic {
+	switch pa.topic {
 	case "i":
-		problem.Print(maxProblem, interval.Ask)
+		problem.Print(pa.maxProblem, interval.Ask)
 	case "s":
-		problem.Print(maxProblem, scale.Ask)
+		problem.Print(pa.maxProblem, scale.Ask)
+	case "v":
+		help.Version()
 	default:
-		help.Print(prog)
+		help.Print(pa.prog)
 	}
 }
 
-func parseArgs(args []string) (string, int, bool) {
-	ok := len(args) > 1
-	topic := ""
-	maxProblem := 0
+func parseArgs(input []string) args {
+	pa := args{}
+	pa.ok = len(input) > 1
 	var err error
-	for i, v := range args {
+	for i, v := range input {
 		switch i {
+		case 0:
+			pa.prog = filepath.Base(v)
 		case 1:
-			topic = v
+			pa.topic = v
 		case 2:
-			maxProblem, err = strconv.Atoi(v)
+			pa.maxProblem, err = strconv.Atoi(v)
 			if err != nil {
-				maxProblem = 0
+				pa.maxProblem = 0
 			}
 		}
 	}
-	return topic, maxProblem, ok
+	return pa
 }
